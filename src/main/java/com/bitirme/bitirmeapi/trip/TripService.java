@@ -156,6 +156,7 @@ public class TripService {
         }
 
         Member submitter = memberService.loadMember(requestDto.getSubmitterId());
+
         requestService.createTripRequest(trip, submitter);
     }
 

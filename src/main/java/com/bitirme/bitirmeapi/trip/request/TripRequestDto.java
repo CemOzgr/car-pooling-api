@@ -1,7 +1,7 @@
 package com.bitirme.bitirmeapi.trip.request;
 
 import com.bitirme.bitirmeapi.member.MemberDto;
-import com.bitirme.bitirmeapi.member.View;
+import com.bitirme.bitirmeapi.util.jackson.View;
 import com.bitirme.bitirmeapi.trip.TripDto;
 import com.fasterxml.jackson.annotation.*;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class TripRequestDto {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -38,7 +38,7 @@ public class TripRequestDto {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @JsonIgnoreProperties(value = {"email", "contactNo", "createdAt", "vehicle", "preferences"})
-    @JsonView(View.External.class)
+    @JsonView(View.Internal.class)
     private MemberDto submitter;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

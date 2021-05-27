@@ -2,6 +2,7 @@ package com.bitirme.bitirmeapi.member;
 
 import com.bitirme.bitirmeapi.member.preferences.PreferencesDto;
 import com.bitirme.bitirmeapi.member.vehicle.VehicleDto;
+import com.bitirme.bitirmeapi.util.jackson.View;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

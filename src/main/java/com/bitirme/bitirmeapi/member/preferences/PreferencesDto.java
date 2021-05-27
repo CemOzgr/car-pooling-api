@@ -1,6 +1,6 @@
 package com.bitirme.bitirmeapi.member.preferences;
 
-import com.bitirme.bitirmeapi.member.View;
+import com.bitirme.bitirmeapi.util.jackson.View;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

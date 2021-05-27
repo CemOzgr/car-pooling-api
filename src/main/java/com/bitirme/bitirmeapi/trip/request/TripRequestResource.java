@@ -1,13 +1,10 @@
 package com.bitirme.bitirmeapi.trip.request;
 
-import com.bitirme.bitirmeapi.member.Member;
-import com.bitirme.bitirmeapi.member.MemberDto;
-import com.bitirme.bitirmeapi.member.View;
 import com.bitirme.bitirmeapi.security.MemberDetails;
-import com.bitirme.bitirmeapi.trip.Trip;
 import com.bitirme.bitirmeapi.trip.TripDto;
 import com.bitirme.bitirmeapi.trip.TripService;
 import com.bitirme.bitirmeapi.trip.waypoint.WaypointDto;
+import com.bitirme.bitirmeapi.util.jackson.View;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.json.MappingJacksonValue;
@@ -40,24 +37,29 @@ public class TripRequestResource {
     }
 
     @PatchMapping("/{requestId}/{requestAction}")
-    public HttpStatus updateRequestStatus(@AuthenticationPrincipal MemberDetails memberDetails,
+    public HttpStatus updateRequestStatus(@AuthenticationPrincipal MemberDetails principal,
                                           @PathVariable int requestId,
                                           @PathVariable Status requestAction) {
         if(requestAction.equals(Status.SUBMITTED)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid request action type");
         }
-        tripService.updateRequestStatus(memberDetails.getId(), requestId, requestAction);
+        tripService.updateRequestStatus(principal.getId(), requestId, requestAction);
         return HttpStatus.OK;
     }
 
     @GetMapping("/{requestId}")
-    public MappingJacksonValue loadRequest(@PathVariable int requestId) {
-        TripRequest request = requestService.loadTripRequest(requestId);
-        Trip trip = request.getTrip();
-        Member submitter = request.getSubmitter();
-        TripRequestDto requestDto = new TripRequestDto(request, new TripDto(trip), new MemberDto(submitter));
+    public MappingJacksonValue loadRequest(@AuthenticationPrincipal MemberDetails principal,
+                                           @PathVariable int requestId) {
+        TripRequestDto requestDto = requestService.loadTripRequestDto(requestId, principal.getId());
         MappingJacksonValue value = new MappingJacksonValue(requestDto);
-        value.setSerializationView(View.External.class);
+
+        if(principal.getId() == requestDto.getSubmitter().getId()) {
+            value.setSerializationView(View.External.class);
+        } else {
+            requestDto.getTrip().getStartLocation().setCoordinates(null);
+            requestDto.getTrip().getDestinationLocation().setCoordinates(null);
+            value.setSerializationView(View.Internal.class);
+        }
 
         return value;
     }

@@ -37,4 +37,10 @@ public interface TripRequestRepository extends JpaRepository<TripRequest, Intege
             "ORDER BY r.submittedAt DESC")
     List<TripRequest> findNotExpiredByTripAndStatus(int tripId, Status status);
 
+    @Query(value="SELECT EXISTS(" +
+            "SELECT FROM v1.trip_requests tr JOIN v1.trips t ON tr.trip_id=t.id " +
+            "WHERE tr.id=?1 AND (tr.submitter_id=?2 OR t.driver_id=?2))",
+            nativeQuery = true)
+    boolean isMemberOwnerOfRequestOrDriver(int requestId, int memberId);
+
 }

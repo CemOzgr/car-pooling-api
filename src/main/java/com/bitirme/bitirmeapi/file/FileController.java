@@ -1,6 +1,5 @@
-package com.bitirme.bitirmeapi;
+package com.bitirme.bitirmeapi.file;
 
-import com.bitirme.bitirmeapi.file.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.FileSystemResource;

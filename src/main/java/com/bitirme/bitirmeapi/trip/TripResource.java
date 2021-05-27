@@ -3,6 +3,7 @@ package com.bitirme.bitirmeapi.trip;
 import com.bitirme.bitirmeapi.member.MemberDto;
 import com.bitirme.bitirmeapi.security.MemberDetails;
 import com.bitirme.bitirmeapi.trip.request.TripRequestDto;
+import com.bitirme.bitirmeapi.util.jackson.View;
 import com.bitirme.bitirmeapi.util.pagination.PageDto;
 import com.bitirme.bitirmeapi.util.pagination.PaginationDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,9 +35,9 @@ public class TripResource {
     }
 
     @GetMapping("")
-    public PageDto<TripDto> loadTrips(@RequestParam String search,
-                                   @RequestParam(name = "page", defaultValue = "0") Integer pageNumber,
-                                   @RequestParam(defaultValue = "10") Integer pageSize) {
+    public MappingJacksonValue loadTrips(@RequestParam String search,
+                                         @RequestParam(name = "page", defaultValue = "0") Integer pageNumber,
+                                         @RequestParam(defaultValue = "10") Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<TripDto> page = tripService.loadTrips(search, pageable);
 
@@ -45,8 +47,9 @@ public class TripResource {
                 page.getTotalPages(),
                 page.getTotalElements()
         );
-
-        return new PageDto<>(page.getContent(), paginationDto);
+        MappingJacksonValue value = new MappingJacksonValue(new PageDto<>(page.getContent(), paginationDto));
+        value.setSerializationView(View.External.class);
+        return value;
     }
     @PostMapping("")
     public HttpStatus createTrip(@AuthenticationPrincipal MemberDetails memberDetails,

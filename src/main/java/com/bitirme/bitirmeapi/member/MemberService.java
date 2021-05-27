@@ -1,5 +1,6 @@
 package com.bitirme.bitirmeapi.member;
 
+import com.bitirme.bitirmeapi.file.FileService;
 import com.bitirme.bitirmeapi.member.preferences.PreferenceService;
 import com.bitirme.bitirmeapi.member.preferences.PreferencesDto;
 import com.bitirme.bitirmeapi.member.rating.Rating;
@@ -12,7 +13,6 @@ import com.bitirme.bitirmeapi.registration.token.ConfirmationToken;
 import com.bitirme.bitirmeapi.registration.token.ConfirmationTokenService;
 import com.bitirme.bitirmeapi.security.MemberDetails;
 import com.bitirme.bitirmeapi.trip.TripDto;
-import com.bitirme.bitirmeapi.file.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;

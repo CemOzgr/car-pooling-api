@@ -1,7 +1,7 @@
 package com.bitirme.bitirmeapi.trip;
 
 import com.bitirme.bitirmeapi.member.MemberDto;
-import com.bitirme.bitirmeapi.member.View;
+import com.bitirme.bitirmeapi.util.jackson.View;
 import com.bitirme.bitirmeapi.trip.waypoint.WaypointDto;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

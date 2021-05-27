@@ -1,6 +1,6 @@
 package com.bitirme.bitirmeapi.member.vehicle;
 
-import com.bitirme.bitirmeapi.member.View;
+import com.bitirme.bitirmeapi.util.jackson.View;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;

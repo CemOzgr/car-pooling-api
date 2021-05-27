@@ -1,4 +1,4 @@
-package com.bitirme.bitirmeapi.member;
+package com.bitirme.bitirmeapi.util.jackson;
 
 public class View {
     public interface External {

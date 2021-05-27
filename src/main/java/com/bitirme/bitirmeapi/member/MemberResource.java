@@ -3,8 +3,11 @@ package com.bitirme.bitirmeapi.member;
 import com.bitirme.bitirmeapi.member.preferences.PreferencesDto;
 import com.bitirme.bitirmeapi.member.rating.RatingDto;
 import com.bitirme.bitirmeapi.member.vehicle.VehicleDto;
+import com.bitirme.bitirmeapi.notification.NotificationDto;
+import com.bitirme.bitirmeapi.notification.NotificationService;
 import com.bitirme.bitirmeapi.security.MemberDetails;
 import com.bitirme.bitirmeapi.trip.TripDto;
+import com.bitirme.bitirmeapi.util.jackson.View;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +25,12 @@ import java.util.Objects;
 public class MemberResource {
 
     private final MemberService memberService;
+    private final NotificationService notificationService;
 
     @Autowired
-    public MemberResource(MemberService memberService) {
+    public MemberResource(MemberService memberService, NotificationService notificationService) {
         this.memberService = memberService;
+        this.notificationService = notificationService;
     }
 
     @GetMapping(value = {"/{memberId}", "/me"})
@@ -59,6 +64,23 @@ public class MemberResource {
     @GetMapping("/me/driver-trips")
     public List<TripDto> loadDriverTrips(@AuthenticationPrincipal MemberDetails principal) {
         return memberService.loadMemberDriverTrips(principal.getId());
+    }
+
+    @GetMapping("/me/notifications")
+    public List<NotificationDto> loadNotifications(@AuthenticationPrincipal MemberDetails principal) {
+        return notificationService.loadNotifications(principal.getId());
+    }
+    @GetMapping("/me/notifications/count")
+    public int loadNotificationCountByRead(@AuthenticationPrincipal MemberDetails principal,
+                                           @RequestParam("read") boolean read) {
+        return notificationService.loadNumberOfNotificationsByRead(principal.getId(), read);
+    }
+
+    @PatchMapping("/me/notifications/{notificationId}")
+    public HttpStatus updateNotificationReadStatus(@AuthenticationPrincipal MemberDetails principal,
+                                                   @PathVariable int notificationId) {
+        notificationService.setNotificationToRead(notificationId, principal.getId());
+        return HttpStatus.OK;
     }
 
     @PostMapping("/me/preference")
