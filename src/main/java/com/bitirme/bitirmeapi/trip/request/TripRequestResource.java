@@ -12,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,11 +30,12 @@ public class TripRequestResource {
     }
 
     @PostMapping("")
-    public HttpStatus insertTripRequest(@AuthenticationPrincipal MemberDetails memberDetails,
-                                        @RequestBody TripRequestDto requestDto) {
+    public void insertTripRequest(@AuthenticationPrincipal MemberDetails memberDetails,
+                                  @RequestBody TripRequestDto requestDto,
+                                  HttpServletResponse response) {
         requestDto.setSubmitterId(memberDetails.getId());
         tripService.insertRequestToTrip(requestDto);
-        return HttpStatus.CREATED;
+        response.addHeader("X-Accel-Buffering", "no");
     }
 
     @PatchMapping("/{requestId}/{requestAction}")

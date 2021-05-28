@@ -15,7 +15,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class RatingNotification extends Notification{
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "rating_id", referencedColumnName = "id")
     private Rating rating;
 

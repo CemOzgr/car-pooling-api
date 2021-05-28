@@ -3,6 +3,7 @@ package com.bitirme.bitirmeapi.trip.request;
 import com.bitirme.bitirmeapi.member.Member;
 import com.bitirme.bitirmeapi.member.MemberDto;
 import com.bitirme.bitirmeapi.notification.Notification;
+import com.bitirme.bitirmeapi.notification.NotificationDtoConverter;
 import com.bitirme.bitirmeapi.notification.NotificationService;
 import com.bitirme.bitirmeapi.notification.TripRequestNotification;
 import com.bitirme.bitirmeapi.trip.Trip;
@@ -41,6 +42,10 @@ public class TripRequestService {
         Notification requestNotification = new TripRequestNotification(
                 "new trip request", trip.getDriver(), request);
         notificationService.saveNotification(requestNotification);
+        notificationService.sendNotification(
+                trip.getDriverId(),
+                NotificationDtoConverter.convertToDto(requestNotification)
+        );
 
     }
 
@@ -87,6 +92,7 @@ public class TripRequestService {
                 request
         );
         notificationService.saveNotification(requestNotification);
+        notificationService.sendNotification(request.getSubmitter().getId(), NotificationDtoConverter.convertToDto(requestNotification));
 
     }
 

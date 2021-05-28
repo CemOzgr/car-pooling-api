@@ -105,7 +105,7 @@ public class TripService {
 
         TripPredicateBuilder builder = new TripPredicateBuilder();
         Pattern pattern = Pattern.compile("(\\w+?)" +
-                "(:|<|>)" +
+                "([:<>])" +
                 "((\\w+?)|([-+]?([1-8]?\\d(\\.\\d+)?|90(\\.0+)?),\\s*[-+]?(180(\\.0+)?|((1[0-7]\\d)|([1-9]?\\d))(\\.\\d+)?))|" +
                 "(\\d{2}-\\d{2}-\\d{4}));", Pattern.UNICODE_CHARACTER_CLASS);
         Matcher matcher = pattern.matcher(search + ";");

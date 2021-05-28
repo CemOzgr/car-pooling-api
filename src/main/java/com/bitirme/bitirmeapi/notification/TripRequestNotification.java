@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "trip_request_notifications", schema = "v1")
@@ -16,12 +15,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class TripRequestNotification extends Notification {
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "trip_request_id", referencedColumnName = "id")
     private TripRequest tripRequest;
 
     @Column(name = "trip_request_id", insertable = false, updatable = false)
-    private int tripRequest_id;
+    private int tripRequestId;
 
     public TripRequestNotification(String message, Member recipient, TripRequest tripRequest) {
         super(message, recipient);

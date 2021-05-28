@@ -20,7 +20,9 @@ public class LoginResource {
         Map<String, Object> memberInfo = new HashMap<>();
         memberInfo.put("id", principal.getId());
         memberInfo.put("fullName", principal.getFullName());
-        memberInfo.put("profilePictureLink", "/api/images/"+principal.getProfilePictureLink());
+        if(principal.getProfilePictureLink() != null) {
+            memberInfo.put("profilePictureLink", "/api/images/"+principal.getProfilePictureLink());
+        }
 
         return new ResponseEntity<>(memberInfo, HttpStatus.OK);
     }
