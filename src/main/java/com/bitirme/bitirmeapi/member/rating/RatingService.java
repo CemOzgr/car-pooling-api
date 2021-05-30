@@ -1,19 +1,31 @@
 package com.bitirme.bitirmeapi.member.rating;
 
+import com.bitirme.bitirmeapi.member.Member;
+import com.bitirme.bitirmeapi.notification.Notification;
+import com.bitirme.bitirmeapi.notification.NotificationDtoConverter;
+import com.bitirme.bitirmeapi.notification.NotificationService;
+import com.bitirme.bitirmeapi.notification.RatingNotification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Service
 public class RatingService {
     private final RatingRepository ratingRepository;
+    private final NotificationService notificationService;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Autowired
-    public RatingService(RatingRepository ratingRepository) {
+    public RatingService(RatingRepository ratingRepository, NotificationService notificationService) {
         this.ratingRepository = ratingRepository;
+        this.notificationService = notificationService;
     }
 
     @Transactional
@@ -27,6 +39,18 @@ public class RatingService {
 
         ratingRepository.save(rating);
 
+        Member sender = entityManager.getReference(Member.class, rating.getSubmitterId());
+
+        Notification ratingNotification = new RatingNotification(
+                "New Rating",
+                rating.getMember(),
+                sender,
+                rating
+        );
+        notificationService.saveNotification(ratingNotification);
+        notificationService.sendNotification(
+                rating.getMember().getId(),
+                NotificationDtoConverter.convertToDto(ratingNotification));
     }
 
     @PreAuthorize("#memberId != authentication.principal.id")
@@ -48,7 +72,5 @@ public class RatingService {
     public List<RatingDto> loadMemberRatings(int memberId) {
         return ratingRepository.findRatingsByMemberId(memberId);
     }
-
-
 
 }

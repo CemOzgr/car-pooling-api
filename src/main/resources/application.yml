@@ -3,6 +3,11 @@ server:
   error:
     include-message: always
     include-binding-errors: always
+  servlet:
+    session:
+      timeout: 60m
+      cookie:
+        max-age: 60m
 
 logging:
   level:

@@ -1,6 +1,8 @@
 package com.bitirme.bitirmeapi.security.config;
 
 import com.bitirme.bitirmeapi.member.MemberService;
+import com.bitirme.bitirmeapi.notification.sse.SseEmitterStore;
+import com.bitirme.bitirmeapi.security.MemberDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -53,7 +55,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .usernameParameter("email")
                 .and()
                     .logout()
-                    .logoutSuccessHandler((request, response, authentication) -> response.setStatus(HttpServletResponse.SC_OK))
+                    .logoutSuccessHandler((request, response, authentication) -> {
+                        if(authentication.getPrincipal() instanceof MemberDetails) {
+                            SseEmitterStore.emitters.remove(((MemberDetails) authentication.getPrincipal()).getId());
+                        }
+                        response.setStatus(HttpServletResponse.SC_OK);
+                    })
                     .deleteCookies("JSESSIONID");
     }
 

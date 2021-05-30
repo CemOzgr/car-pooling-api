@@ -19,8 +19,8 @@ public class RatingNotification extends Notification{
     @JoinColumn(name = "rating_id", referencedColumnName = "id")
     private Rating rating;
 
-    public RatingNotification(String message, Member recipient, Rating rating) {
-        super(message, recipient);
+    public RatingNotification(String message, Member recipient, Member sender, Rating rating) {
+        super(message, recipient, sender);
         this.rating = rating;
     }
 

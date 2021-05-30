@@ -43,4 +43,10 @@ public class NotificationService {
     public void setNotificationToRead(int id, int principalId) {
         notificationRepository.setRead(id);
     }
+
+    @Transactional
+    public void deleteNotificationsForTripRequest(int tripRequestId) {
+        notificationRepository.deleteNotificationsByTripRequestId(tripRequestId);
+    }
+
 }

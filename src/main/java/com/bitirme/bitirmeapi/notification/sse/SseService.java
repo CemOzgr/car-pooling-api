@@ -9,7 +9,9 @@ import java.io.IOException;
 public class SseService {
 
     public SseEmitter subscribeAndGetEmitter(int memberId) {
-        SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
+        final long ONE_HOUR = 3600000L;
+
+        SseEmitter emitter = new SseEmitter(ONE_HOUR);
         sendInitEvent(emitter);
 
         SseEmitterStore.emitters.put(memberId, emitter);

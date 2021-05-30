@@ -12,6 +12,12 @@ import java.time.LocalDateTime;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
 @Getter
+@NamedEntityGraph(
+        name = "sender-notification-graph",
+        attributeNodes = {
+                @NamedAttributeNode("sender")
+        }
+)
 public abstract class Notification {
 
     @Id
@@ -30,12 +36,22 @@ public abstract class Notification {
     @JoinColumn(name = "recipient_id", referencedColumnName = "id")
     private Member recipient;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sender_id", referencedColumnName = "id")
+    private Member sender;
+
     @Column(name = "recipient_id", insertable = false, updatable = false)
     private int recipientId;
 
-    public Notification(String message, Member recipient) {
+    @Column(name = "sender_id", insertable = false, updatable = false)
+    private int senderId;
+
+    public Notification(String message, Member recipient, Member sender) {
         this.message = message;
         this.recipient = recipient;
+        this.recipientId = recipient.getId();
+        this.sender = sender;
+        this.senderId = sender.getId();
     }
 
 }

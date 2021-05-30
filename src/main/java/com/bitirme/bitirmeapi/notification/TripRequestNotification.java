@@ -22,9 +22,10 @@ public class TripRequestNotification extends Notification {
     @Column(name = "trip_request_id", insertable = false, updatable = false)
     private int tripRequestId;
 
-    public TripRequestNotification(String message, Member recipient, TripRequest tripRequest) {
-        super(message, recipient);
+    public TripRequestNotification(String message, Member recipient, Member sender, TripRequest tripRequest) {
+        super(message, recipient, sender);
         this.tripRequest = tripRequest;
+        this.tripRequestId = tripRequest.getId();
     }
 
 }
