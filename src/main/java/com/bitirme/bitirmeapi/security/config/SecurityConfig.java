@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
 import javax.servlet.http.HttpServletResponse;
@@ -50,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
                 .and()
                     .formLogin()
-                        .defaultSuccessUrl("/login/success")
+                        .successHandler(successHandler())
                         .failureHandler(failureHandler())
                         .usernameParameter("email")
                 .and()
@@ -68,5 +69,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationFailureHandler failureHandler() {
         return new CustomAuthenticationFailureHandler();
     }
+
+    @Bean
+    public AuthenticationSuccessHandler successHandler() { return new CustomAuthenticationSuccessHandler(); }
 
 }

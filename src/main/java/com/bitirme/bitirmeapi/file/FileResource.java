@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api/images")
-public class FileController {
+public class FileResource {
 
     private final FileService fileService;
 
     @Autowired
-    public FileController(@Qualifier("image") FileService fileService) {
+    public FileResource(@Qualifier("image") FileService fileService) {
         this.fileService = fileService;
     }
 
